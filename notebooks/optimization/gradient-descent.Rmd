@@ -25,13 +25,61 @@ grad_f <- function(x) {
   2 * (x - 3)
 }
 
-# Configuração inicial
-x <- 5
-eta <- 0.2
-
-x_next <- x - eta*grad_f(x)
-
-# Comparar a função antes e depois
-f(x)
-f(x_next)
 ```
+
+```{r}
+# Configuração do experimento
+n_iter <- 100
+x0 <- 5
+eta <- 0.2
+tol <- 1e-6
+
+# Pré-alocação do vetor de trajetória
+x <- numeric(n_iter + 1)
+x[1] <- x0
+
+convergiu <- FALSE
+
+# Algoritmo de gradiente descendente
+for (k in seq_len(n_iter)) {
+
+  x[k + 1] <- x[k] - eta * grad_f(x[k])
+
+  # Critério de parada
+  if (abs(grad_f(x[k + 1])) < tol) {
+    convergiu <- TRUE
+    break
+  }
+}
+
+# Manter apenas as iterações realizadas
+x <- x[seq_len(k + 1)]
+n_realizadas <- length(x) - 1
+
+# Diagnóstico
+convergiu
+n_realizadas
+head(x)
+tail(x)
+
+# Avaliação da função objetivo
+f(x[1])
+f(tail(x, 1))
+
+# Gradiente no último ponto
+abs(grad_f(tail(x, 1)))
+
+# Gráfico de convergência
+plot(
+  0:n_realizadas,
+  x,
+  type = "l",
+  xlab = "Iteração",
+  ylab = "Valor de x",
+  main = "Convergência do gradiente descendente"
+)
+
+abline(h = 3, col = "red", lty = 2)
+```
+
+
