@@ -1,0 +1,37 @@
+---
+title: "Gradiente descendente"
+subtitle: "ME524 — Computação Aplicada à Estatística"
+output: html_document
+---
+
+# Primeiro experimento
+
+Vamos minimizar a função:
+
+$$
+f(x) = (x-3)^2 + 2
+$$
+
+Seu mínimo é atingido em $x=3$.
+
+```{r}
+# Função objetivo
+f <- function(x) {
+  (x - 3)^2 + 2
+}
+
+# Gradiente, ou primeira derivada
+grad_f <- function(x) {
+  2 * (x - 3)
+}
+
+# Configuração inicial
+x <- 5
+eta <- 0.2
+
+x_next <- x - eta*grad_f(x)
+
+# Comparar a função antes e depois
+f(x)
+f(x_next)
+```
