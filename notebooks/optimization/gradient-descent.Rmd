@@ -83,3 +83,45 @@ abline(h = 3, col = "red", lty = 2)
 ```
 
 
+
+## Comparação de taxas de aprendizado
+
+```{r}
+taxas <- c(0.2, 0.8, 1, 1.1)
+
+resultados <- data.frame(
+  eta = taxas,
+  convergiu = FALSE,
+  iteracoes = integer(length(taxas)),
+  x_final = numeric(length(taxas)),
+  f_final = numeric(length(taxas))
+)
+
+for (j in seq_along(taxas)) {
+
+  eta_teste <- taxas[j]
+  x_teste <- numeric(n_iter + 1)
+  x_teste[1] <- 5
+
+  convergiu_teste <- FALSE
+  n_teste <- n_iter
+
+  for (k in seq_len(n_iter)) {
+    x_teste[k + 1] <- x_teste[k] -
+      eta_teste * grad_f(x_teste[k])
+
+    if (abs(grad_f(x_teste[k + 1])) < tol) {
+      convergiu_teste <- TRUE
+      n_teste <- k
+      break
+    }
+  }
+
+  resultados$convergiu[j] <- convergiu_teste
+  resultados$iteracoes[j] <- n_teste
+  resultados$x_final[j] <- x_teste[n_teste + 1]
+  resultados$f_final[j] <- f(x_teste[n_teste + 1])
+}
+
+resultados
+```
